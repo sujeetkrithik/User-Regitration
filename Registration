@@ -1,0 +1,109 @@
+package khushi17;
+
+import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class registration extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField user;
+	private JTextField email;
+	private JTextField pass;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					registration frame = new registration();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public registration() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 358, 425);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		user = new JTextField();
+		user.setBounds(25, 58, 285, 49);
+		contentPane.add(user);
+		user.setColumns(10);
+		
+		email = new JTextField();
+		email.setColumns(10);
+		email.setBounds(25, 154, 285, 49);
+		contentPane.add(email);
+		
+		pass = new JTextField();
+		pass.setColumns(10);
+		pass.setBounds(25, 250, 285, 49);
+		contentPane.add(pass);
+		
+		JLabel emailLabel = new JLabel("Email");
+		emailLabel.setBounds(25, 128, 155, 24);
+		contentPane.add(emailLabel);
+		
+		JLabel passLabel = new JLabel("Password");
+		passLabel.setBounds(25, 224, 155, 24);
+		contentPane.add(passLabel);
+		
+		JButton btnNewButton = new JButton("Registration");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/newdb"," "," ");
+ PreparedStatement stmt=con.prepareStatement("insert into user(user_name,user_email,user_password) values(?,?,?);");
+               stmt.setString(1, user.getText());
+	           stmt.setString(2, email.getText());
+	           stmt.setString(3, pass.getText());  
+	           int x=stmt.executeUpdate();
+	           if(x>0)
+	           {
+	        	   System.out.println("Registration done successfully.....");
+	           }
+	           else
+	           {
+	        	   System.out.println("Registration failed...");
+	           }
+				}
+				catch(Exception e1)
+				{
+					System.out.println(e1);
+				}
+				
+			}
+		});
+		btnNewButton.setBounds(25, 327, 165, 35);
+		contentPane.add(btnNewButton);
+		
+		JLabel lblNewLabel = new JLabel("Username");
+		lblNewLabel.setBounds(25, 33, 103, 24);
+		contentPane.add(lblNewLabel);
+	}
+}
